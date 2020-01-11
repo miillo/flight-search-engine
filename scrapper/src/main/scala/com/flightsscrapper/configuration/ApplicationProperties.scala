@@ -6,7 +6,8 @@ import com.typesafe.config.{Config, ConfigException, ConfigFactory}
 sealed class ApplicationProperties(configPath: String) {
   private val config: Config = createConfigFactory()
 
-  val sourceDataPath: String = config.getString("source-data.path")
+  val airportsFilePath: String = config.getString("source-data.airportsFile")
+  val airlinesFilePath: String = config.getString("source-data.airlinesFile")
 
   private def createConfigFactory(): Config = {
     try {
