@@ -11,6 +11,7 @@ sealed class ApplicationProperties(configPath: String) {
   val skytraxSite: String = config.getString("sites.skytrax")
   val firstResSelPath: String = config.getString("airport-scraping.first-search-result")
   val commentSection: String = config.getString("airport-scraping.comment-section")
+  val noOfScraperActors: Int = config.getInt("actors.no-of-scraper-actors")
 
   private def createConfigFactory(): Config = {
     try {
