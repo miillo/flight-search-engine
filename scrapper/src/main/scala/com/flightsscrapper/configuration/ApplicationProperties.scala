@@ -12,6 +12,8 @@ sealed class ApplicationProperties(configPath: String) {
   val firstResSelPath: String = config.getString("airport-scraping.first-search-result")
   val commentSection: String = config.getString("airport-scraping.comment-section")
   val noOfScraperActors: Int = config.getInt("actors.no-of-scraper-actors")
+  val mongoDbConnStr: String = config.getString("mongo-db.connection-str")
+  val mongoDbAirportColl: String = config.getString("mongo-db.airport-collection")
 
   private def createConfigFactory(): Config = {
     try {
