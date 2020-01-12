@@ -8,6 +8,8 @@ sealed class ApplicationProperties(configPath: String) {
 
   val airportsFilePath: String = config.getString("source-data.airportsFile")
   val airlinesFilePath: String = config.getString("source-data.airlinesFile")
+  val skytraxSite: String = config.getString("sites.skytrax")
+  val firstResSelPath: String = config.getString("airport-scraping.first-search-result")
 
   private def createConfigFactory(): Config = {
     try {
