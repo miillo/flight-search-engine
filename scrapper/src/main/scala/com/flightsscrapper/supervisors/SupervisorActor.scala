@@ -17,7 +17,8 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
 //  val airlines: List[Airline] = FileReader.readAirlinesFile(appProperties.airlinesFilePath)
 
   val scrapingService: ScrapingService = new ScrapingService(appProperties)
-  scrapingService.getAirportComments(Airport("baghdad", "FRA"))
+  val res = scrapingService.getAirportComments(Airport("frankfurt", "FRA"))
+  println(res)
 
   override def receive: Receive = {
     case msg: String =>
