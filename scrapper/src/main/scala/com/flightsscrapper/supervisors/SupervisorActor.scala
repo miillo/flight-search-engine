@@ -3,7 +3,8 @@ package com.flightsscrapper.supervisors
 import akka.actor.{Actor, Props}
 import akka.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
 import com.flightsscrapper.configuration.ApplicationProperties
-import com.flightsscrapper.models.{Airline, Airport}
+import com.flightsscrapper.models.{Airline, Airport, Comment}
+import com.flightsscrapper.persistence.services.MongoDbService
 import com.flightsscrapper.scrapers.ScraperActor
 import com.flightsscrapper.supervisors.services.FileReader
 
@@ -18,6 +19,9 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
 
   var router: Router = createRouter()
   router.route("Hello from master", self)
+
+  val test = new MongoDbService(appProperties)
+  test.saveInstances(Seq(Comment(10,"10.01.10","test comment")))
 
   override def receive: Receive = {
     case msg: String =>

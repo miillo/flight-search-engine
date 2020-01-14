@@ -13,6 +13,7 @@ sealed class ApplicationProperties(configPath: String) {
   val commentSection: String = config.getString("airport-scraping.comment-section")
   val noOfScraperActors: Int = config.getInt("actors.no-of-scraper-actors")
   val mongoDbConnStr: String = config.getString("mongo-db.connection-str")
+  val mongoDbName: String = config.getString("mongo-db.db-name")
   val mongoDbAirportColl: String = config.getString("mongo-db.airport-collection")
 
   private def createConfigFactory(): Config = {

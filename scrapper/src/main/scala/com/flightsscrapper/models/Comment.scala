@@ -1,3 +1,9 @@
 package com.flightsscrapper.models
 
-case class Comment(rate: Int, date: String, comment: String)
+import org.mongodb.scala.bson.ObjectId
+
+object Comment {
+  def apply(rate: Int, date: String, comment: String): Comment = Comment(new ObjectId(), rate, date, comment)
+}
+
+case class Comment(_id: ObjectId, rate: Int, date: String, comment: String)
