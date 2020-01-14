@@ -3,9 +3,8 @@ package com.flightsscrapper.scrapers.services
 import com.flightsscrapper.configuration.ApplicationProperties
 import com.flightsscrapper.models.{Comment, SourceModel}
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
-import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
-import net.ruippeixotog.scalascraper.dsl.DSL.Parse._
+import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.{Element, ElementQuery}
 
 class ScrapingService(appProperties: ApplicationProperties) {

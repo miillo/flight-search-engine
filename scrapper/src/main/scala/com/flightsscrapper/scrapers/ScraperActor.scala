@@ -1,18 +1,23 @@
 package com.flightsscrapper.scrapers
 
-import akka.actor.{Actor, Props}
+import akka.actor.{Actor, ActorRef, Props}
 import com.flightsscrapper.configuration.ApplicationProperties
+import com.flightsscrapper.models.SourceModel
+import com.flightsscrapper.persistence.PersistenceActor.ModelComments
 import com.flightsscrapper.scrapers.services.ScrapingService
 
 object ScraperActor {
-  def props(appProperties: ApplicationProperties): Props = Props(new ScraperActor(appProperties))
+  def props(appProperties: ApplicationProperties, persistenceActorRef: ActorRef): Props =
+    Props(new ScraperActor(appProperties, persistenceActorRef))
 }
 
-class ScraperActor(appProperties: ApplicationProperties) extends Actor{
+class ScraperActor(appProperties: ApplicationProperties, persistenceActorRef: ActorRef) extends Actor{
   val scrapingService: ScrapingService = new ScrapingService(appProperties)
 
   override def receive: Receive = {
-    case msg: String =>
-      println("Kid: " + msg)
+    case msg: SourceModel =>
+      println("ScraperActor received msg from: " + sender().path.name)
+      val comments = scrapingService.getModelComments(msg)
+      persistenceActorRef ! ModelComments(comments)
   }
 }
