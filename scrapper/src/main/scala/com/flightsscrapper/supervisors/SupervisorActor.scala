@@ -3,9 +3,9 @@ package com.flightsscrapper.supervisors
 import akka.actor.{Actor, Props}
 import akka.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
 import com.flightsscrapper.configuration.ApplicationProperties
-import com.flightsscrapper.models.{Airline, Airport, Comment}
-import com.flightsscrapper.persistence.services.MongoDbService
+import com.flightsscrapper.models.SourceModel
 import com.flightsscrapper.scrapers.ScraperActor
+import com.flightsscrapper.scrapers.services.ScrapingService
 import com.flightsscrapper.supervisors.services.FileReader
 
 object SupervisorActor {
@@ -14,14 +14,16 @@ object SupervisorActor {
 
 class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
 
-  val airports: List[Airport] = FileReader.readAirportsFile(appProperties.airportsFilePath)
-  val airlines: List[Airline] = FileReader.readAirlinesFile(appProperties.airlinesFilePath)
+  val airports: List[SourceModel] = FileReader.readAirportsFile(appProperties.airportsFilePath)
+  val airlines: List[SourceModel] = FileReader.readAirlinesFile(appProperties.airlinesFilePath)
+
+  val test = new ScrapingService(appProperties)
 
   var router: Router = createRouter()
   router.route("Hello from master", self)
 
-  val test = new MongoDbService(appProperties)
-  test.saveInstances(Seq(Comment(10,"10.01.10","test comment")))
+//  val test = new MongoDbService(appProperties)
+//  test.saveInstances(Seq(Comment("my", "airport", 10,"10.01.10","test comment")))
 
   override def receive: Receive = {
     case msg: String =>

@@ -15,6 +15,7 @@ sealed class ApplicationProperties(configPath: String) {
   val mongoDbConnStr: String = config.getString("mongo-db.connection-str")
   val mongoDbName: String = config.getString("mongo-db.db-name")
   val mongoDbAirportColl: String = config.getString("mongo-db.airport-collection")
+  val mongoDbAirlineColl: String = config.getString("mongo-db.airline-collection")
 
   private def createConfigFactory(): Config = {
     try {
