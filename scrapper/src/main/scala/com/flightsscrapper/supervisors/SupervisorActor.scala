@@ -21,9 +21,6 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
   var router: Router = createRouter()
   router.route(SourceModel("Cayman Airways", "00"), self)
 
-//  val test = new MongoDbService(appProperties)
-//  test.saveInstances(Seq(Comment("my", "airport", 10,"10.01.10","test comment")))
-
   override def receive: Receive = {
     case msg: String =>
       sender ! "Hello"

@@ -8,7 +8,7 @@ import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.{Element, ElementQuery}
 
 class ScrapingService(appProperties: ApplicationProperties) {
-
+  private val enricherService = new EnricherService
   private var browser = JsoupBrowser()
 
   /**
@@ -48,7 +48,6 @@ class ScrapingService(appProperties: ApplicationProperties) {
 
   /**
    * Scrapes model site
-   * todo parse date
    *
    * @param sourceModel model data
    * @param modelUrl model site URL
@@ -71,7 +70,8 @@ class ScrapingService(appProperties: ApplicationProperties) {
         val rating = (comment >> allText("div.rating-10 > span:nth-child(1)")).toInt
         val date = comment >> allText("div.body > h3.text_sub_header > time")
         val commentStr = comment >> allText("div.tc_mobile > div.text_content")
-        Comment(sourceModel.fullName, sourceModel.code, rating, date, commentStr)
+        val sentimentRate = enricherService.getStanfordSentimentRate(commentStr)
+        Comment(sourceModel.fullName, sourceModel.code, rating, date, commentStr, sentimentRate)
       })
       .toList
   }

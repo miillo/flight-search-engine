@@ -8,6 +8,7 @@ object Dependencies {
     val scalaScraper = "2.2.0"
     val mongoDb = "2.8.0"
     val stanfordNLPCore = "3.9.2"
+    val stanfordNLPParser = "3.9.2"
     val scala = "2.13.1"
   }
 
@@ -16,6 +17,10 @@ object Dependencies {
   private val scalaScraper: ModuleID = "net.ruippeixotog" %% "scala-scraper" % versions.scalaScraper
   private val mongoDbDriver: ModuleID = "org.mongodb.scala" %% "mongo-scala-driver" % versions.mongoDb
   private val stanfordNLPCore: ModuleID = "edu.stanford.nlp" % "stanford-corenlp" % versions.stanfordNLPCore
+  private val stanfordNLPParser: ModuleID = "edu.stanford.nlp" % "stanford-parser" % versions.stanfordNLPParser
+  private val stanModels: ModuleID = "edu.stanford.nlp" % "stanford-corenlp" % "3.9.2" classifier "models"
+  private val stanModelsEng: ModuleID = "edu.stanford.nlp" % "stanford-corenlp" % "3.9.2" classifier "models-english"
 
-  val dependencies: Seq[ModuleID] = Seq(akkaActor, typesafeConfig, scalaScraper, mongoDbDriver, stanfordNLPCore)
+
+  val dependencies: Seq[ModuleID] = Seq(akkaActor, typesafeConfig, scalaScraper, mongoDbDriver, stanfordNLPCore, stanfordNLPParser, stanModels, stanModelsEng)
 }

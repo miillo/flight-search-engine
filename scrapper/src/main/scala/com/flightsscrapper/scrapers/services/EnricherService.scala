@@ -1,30 +1,24 @@
-package com.enricher
+package com.flightsscrapper.scrapers.services
 
 import java.util.Properties
 
 import com.flightsscrapper.configuration.ApplicationProperties
+import com.flightsscrapper.models.Comment
 import com.flightsscrapper.persistence.services.MongoDbService
 import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations
-import edu.stanford.nlp.pipeline.Annotation
-import edu.stanford.nlp.pipeline.StanfordCoreNLP
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations
-import edu.stanford.nlp.trees.Tree
-import edu.stanford.nlp.util.CoreMap
 
-import scala.util.Properties
+class EnricherService {
 
-class Enricher(appProperties: ApplicationProperties) {
-  val mongoDbService = new MongoDbService(appProperties)
+//  def enrich(comments: List[Comment]): Unit = {
+//    for (comment <- comments) {
+//      println(getStanfordSentimentRate(comment.comment))
+//    }
+//  }
 
-  def enrich(): Unit = {
-    val comments = mongoDbService.getElements("Cayman Airways")
-    for (comment <- comments) {
-      println(getStanfordSentimentRate(comment.comment))
-    }
-  }
-
-  private def getStanfordSentimentRate(comment: String): Int = {
+   def getStanfordSentimentRate(comment: String): Int = {
     val props = new Properties()
     props.setProperty("annotators", "tokenize, ssplit, parse, sentiment")
     val pipeline = new StanfordCoreNLP(props)
@@ -35,14 +29,15 @@ class Enricher(appProperties: ApplicationProperties) {
       if (linesArr(i) != null) {
         val annotation: Annotation = pipeline.process(linesArr(i))
         val coreMapList = annotation.get(classOf[CoreAnnotations.SentencesAnnotation])
-        for (sentence <- coreMapList) {
-          val tree = sentence.get(classOf[SentimentCoreAnnotations.SentimentAnnotatedTree])
+
+        for (i <- 0 until coreMapList.size()) {
+          val tree = coreMapList.get(i).get(classOf[SentimentCoreAnnotations.SentimentAnnotatedTree])
           val score = RNNCoreAnnotations.getPredictedClass(tree)
           totalRate = totalRate + (score - 2)
         }
       }
     }
-  totalRate
+    totalRate
   }
 
 }

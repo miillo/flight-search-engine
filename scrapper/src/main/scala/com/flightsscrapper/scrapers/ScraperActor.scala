@@ -4,7 +4,7 @@ import akka.actor.{Actor, ActorRef, Props}
 import com.flightsscrapper.configuration.ApplicationProperties
 import com.flightsscrapper.models.SourceModel
 import com.flightsscrapper.persistence.PersistenceActor.ModelComments
-import com.flightsscrapper.scrapers.services.ScrapingService
+import com.flightsscrapper.scrapers.services.{EnricherService, ScrapingService}
 
 object ScraperActor {
   def props(appProperties: ApplicationProperties, persistenceActorRef: ActorRef): Props =
