@@ -14,7 +14,7 @@ object FileReader {
       .filter(line => if (!line.isBlank) true else false)
       .map(line => {
           val splittedLine = line.split("\t")
-        SourceModel(splittedLine(0).trim, splittedLine(3).trim)
+        SourceModel(splittedLine(3).trim, splittedLine(0).trim)
       })
       .toList
 

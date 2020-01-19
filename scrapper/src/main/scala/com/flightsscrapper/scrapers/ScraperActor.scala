@@ -18,6 +18,10 @@ class ScraperActor(appProperties: ApplicationProperties, persistenceActorRef: Ac
     case msg: SourceModel =>
       println("ScraperActor received msg from: " + sender().path.name)
       val comments = scrapingService.getModelComments(msg)
-      persistenceActorRef ! ModelComments(comments)
+      if (comments != null) {
+        persistenceActorRef ! ModelComments(comments)
+      } else {
+        println("Reading comments for: " + msg.fullName + "[" + msg.code + "]" + " failed")
+      }
   }
 }

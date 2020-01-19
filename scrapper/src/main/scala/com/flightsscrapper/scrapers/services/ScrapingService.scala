@@ -1,15 +1,20 @@
 package com.flightsscrapper.scrapers.services
 
+import java.net.SocketTimeoutException
+
 import com.flightsscrapper.configuration.ApplicationProperties
 import com.flightsscrapper.models.{Comment, SourceModel}
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.{Element, ElementQuery}
+import org.jsoup.Connection
 
 class ScrapingService(appProperties: ApplicationProperties) {
   private val enricherService = new EnricherService
-  private var browser = JsoupBrowser()
+  private var browser = new JsoupBrowser {
+    override def requestSettings(conn: Connection): Connection = conn.timeout(appProperties.siteTimeout)
+  }
 
   /**
    * Retrieves airport comments from http site
@@ -21,9 +26,8 @@ class ScrapingService(appProperties: ApplicationProperties) {
     var airportUrl = ""
     searchModel(sourceModel) match {
       case Some(element) => airportUrl = element
-      case None => None
+      case None => return null
     }
-
     scrapeSite(sourceModel, airportUrl)
   }
 
@@ -35,13 +39,20 @@ class ScrapingService(appProperties: ApplicationProperties) {
    * @return model site URL
    */
   private def searchModel(sourceModel: SourceModel): Option[String] = {
-    val firstSearchResult = browser
-      .get(appProperties.skytraxSite + sourceModel.fullName) >?> element(appProperties.firstResSelPath)
-    firstSearchResult match {
-      case Some(element) =>
-        Some(element.attr("href"))
-      case None =>
-        println("No results found for airport: " + sourceModel.fullName + "[" + sourceModel.code + "]")
+    try {
+      val firstSearchResult = browser
+        .get(appProperties.skytraxSite + sourceModel.fullName) >?> element(appProperties.firstResSelPath)
+
+      firstSearchResult match {
+        case Some(element) =>
+          Some(element.attr("href"))
+        case None =>
+          println("No results found for airport: " + sourceModel.fullName + "[" + sourceModel.code + "]")
+          None
+      }
+    } catch {
+      case rto: SocketTimeoutException =>
+        println("Exception for: " + sourceModel.fullName + "[" + sourceModel.code + "]. Cause: " + rto.getMessage)
         None
     }
   }
@@ -62,7 +73,7 @@ class ScrapingService(appProperties: ApplicationProperties) {
         comments = element
       case None =>
         println("No comments found for airport: " + sourceModel.fullName + "[" + sourceModel.code + "]")
-        None
+        return null
     }
 
     comments

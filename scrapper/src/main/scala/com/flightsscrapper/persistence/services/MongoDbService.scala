@@ -18,12 +18,13 @@ class MongoDbService(appProperties: ApplicationProperties) {
   val codecRegistry: CodecRegistry = fromRegistries(fromProviders(classOf[Comment]), DEFAULT_CODEC_REGISTRY)
   val mongoClient: MongoClient = MongoClient(appProperties.mongoDbConnStr)
   val database: MongoDatabase = mongoClient.getDatabase(appProperties.mongoDbName).withCodecRegistry(codecRegistry)
-  val collection: MongoCollection[Comment] = database.getCollection(appProperties.mongoDbAirportColl)
+  val collection: MongoCollection[Comment] = database.getCollection(appProperties.mongoDbCollection)
 
   def saveInstances(comments: Seq[Comment]): Unit = collection.insertMany(comments).printResults()
 
   def getElements(name: String): Seq[Comment] = {
-    val res = collection.find(equal("name", name))
+    val res = collection.find(equal("name", "Cayman Airways"))
     Await.result(res.toFuture(), Duration.Inf)
   }
+
 }

@@ -9,13 +9,13 @@ sealed class ApplicationProperties(configPath: String) {
   val airportsFilePath: String = config.getString("source-data.airportsFile")
   val airlinesFilePath: String = config.getString("source-data.airlinesFile")
   val skytraxSite: String = config.getString("sites.skytrax")
+  val siteTimeout: Int = config.getInt("sites.timeout")
   val firstResSelPath: String = config.getString("airport-scraping.first-search-result")
   val commentSection: String = config.getString("airport-scraping.comment-section")
   val noOfScraperActors: Int = config.getInt("actors.no-of-scraper-actors")
   val mongoDbConnStr: String = config.getString("mongo-db.connection-str")
   val mongoDbName: String = config.getString("mongo-db.db-name")
-  val mongoDbAirportColl: String = config.getString("mongo-db.airport-collection")
-  val mongoDbAirlineColl: String = config.getString("mongo-db.airline-collection")
+  val mongoDbCollection: String = config.getString("mongo-db.collection")
 
   private def createConfigFactory(): Config = {
     try {
