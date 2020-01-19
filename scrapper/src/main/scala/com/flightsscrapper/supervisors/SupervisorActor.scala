@@ -19,7 +19,7 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
   val airlines: List[SourceModel] = FileReader.readAirlinesFile(appProperties.airlinesFilePath)
 
   var router: Router = createRouter()
-//  initializeAirports()
+  initializeAirports()
   initializeAirlines()
 
   override def receive: Receive = {
