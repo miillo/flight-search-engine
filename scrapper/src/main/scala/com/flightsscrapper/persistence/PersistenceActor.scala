@@ -17,6 +17,10 @@ class PersistenceActor(appProperties: ApplicationProperties) extends Actor {
   override def receive: Receive = {
     case msg: ModelComments =>
       println("PersistenceActor received msg from: " + sender().path.name)
-      mongoDbService.saveInstances(msg.comments)
+      if (msg.comments.isEmpty) {
+        println("Comments list empty!")
+      } else {
+        mongoDbService.saveInstances(msg.comments)
+      }
   }
 }

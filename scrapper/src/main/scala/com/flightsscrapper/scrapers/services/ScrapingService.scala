@@ -40,9 +40,10 @@ class ScrapingService(appProperties: ApplicationProperties) {
    */
   private def searchModel(sourceModel: SourceModel): Option[String] = {
     try {
-      val firstSearchResult = browser
-        .get(appProperties.skytraxSite + sourceModel.fullName) >?> element(appProperties.firstResSelPath)
+      val modelName = sourceModel.fullName.split("\\s")(0)
 
+      val firstSearchResult = browser
+        .get(appProperties.skytraxSite + modelName) >?> element(appProperties.firstResSelPath)
       firstSearchResult match {
         case Some(element) =>
           Some(element.attr("href"))
@@ -51,7 +52,7 @@ class ScrapingService(appProperties: ApplicationProperties) {
           None
       }
     } catch {
-      case rto: SocketTimeoutException =>
+      case rto: Exception =>
         println("Exception for: " + sourceModel.fullName + "[" + sourceModel.code + "]. Cause: " + rto.getMessage)
         None
     }
@@ -78,7 +79,13 @@ class ScrapingService(appProperties: ApplicationProperties) {
 
     comments
       .map(comment => {
-        val rating = (comment >> allText("div.rating-10 > span:nth-child(1)")).toInt
+        val ratingStr = (comment >> allText("div.rating-10 > span:nth-child(1)"))
+        var rating = 0
+        if (ratingStr.isEmpty) {
+          rating = -1
+        } else {
+          rating = ratingStr.toInt
+        }
         val date = comment >> allText("div.body > h3.text_sub_header > time")
         val commentStr = comment >> allText("div.tc_mobile > div.text_content")
         val sentimentRate = enricherService.getStanfordSentimentRate(commentStr)

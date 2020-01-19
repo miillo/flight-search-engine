@@ -19,10 +19,8 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
   val airlines: List[SourceModel] = FileReader.readAirlinesFile(appProperties.airlinesFilePath)
 
   var router: Router = createRouter()
-  initializeAirports()
-//  router.route(SourceModel("Anapa", "AAN"), self)
-
-//  router.route(SourceModel("Cayman Airways", "00"), self)
+//  initializeAirports()
+  initializeAirlines()
 
   override def receive: Receive = {
     case msg: String =>
@@ -42,7 +40,14 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
   private def initializeAirports(): Unit = {
     for (sourceModel <- airports) {
       router.route(sourceModel, self)
-      Thread.sleep(5000)
+      Thread.sleep(appProperties.httpDelay)
+    }
+  }
+
+  private def initializeAirlines(): Unit = {
+    for (sourceModel <- airlines) {
+      router.route(sourceModel, self)
+      Thread.sleep(appProperties.httpDelay)
     }
   }
 }
