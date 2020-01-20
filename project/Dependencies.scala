@@ -9,7 +9,7 @@ object Dependencies {
     val mongoDb = "2.8.0"
     val stanfordNLPCore = "3.9.2"
     val stanfordNLPParser = "3.9.2"
-    val scala = "2.13.1"
+    val scalaGraph = "1.13.2"
   }
 
   private val akkaActor: ModuleID = "com.typesafe.akka" %% "akka-actor" % versions.akkaActor
@@ -20,7 +20,9 @@ object Dependencies {
   private val stanfordNLPParser: ModuleID = "edu.stanford.nlp" % "stanford-parser" % versions.stanfordNLPParser
   private val stanModels: ModuleID = "edu.stanford.nlp" % "stanford-corenlp" % "3.9.2" classifier "models"
   private val stanModelsEng: ModuleID = "edu.stanford.nlp" % "stanford-corenlp" % "3.9.2" classifier "models-english"
+  private val scalaGraph = "org.scala-graph" %% "graph-core" % versions.scalaGraph
 
-
-  val dependencies: Seq[ModuleID] = Seq(akkaActor, typesafeConfig, scalaScraper, mongoDbDriver, stanfordNLPCore, stanfordNLPParser, stanModels, stanModelsEng)
+  val commonDependencies: Seq[ModuleID] = Seq(scalaScraper)
+  val scrapperDependencies: Seq[ModuleID] = Seq(akkaActor, typesafeConfig, scalaScraper, mongoDbDriver, stanfordNLPCore, stanfordNLPParser, stanModels, stanModelsEng)
+  val backendDependencies: Seq[ModuleID] = Seq(scalaGraph)
 }
