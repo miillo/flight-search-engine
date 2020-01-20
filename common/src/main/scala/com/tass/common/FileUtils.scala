@@ -1,5 +1,8 @@
 package com.tass.common
 
+import java.nio.charset.Charset
+import java.nio.file.{Files, Paths, StandardOpenOption}
+
 import scala.io.{Codec, Source}
 
 object FileUtils {
@@ -14,5 +17,14 @@ object FileUtils {
 
     source.close()
     lines
+  }
+
+  def saveAggregateScore(filePath: String, aggScore: Int, fullName: String): Unit = {
+    val path = Paths.get(filePath)
+    val bufWriter = Files.newBufferedWriter(path, Charset.forName("ISO-8859-1"), StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+    val textToWrite = fullName + "\t" + aggScore
+    bufWriter.write(textToWrite)
+    bufWriter.newLine()
+    bufWriter.close()
   }
 }

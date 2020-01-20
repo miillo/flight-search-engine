@@ -12,6 +12,7 @@ sealed class ApplicationProperties {
   val firstResSelPath: String = config.getString("scraping.first-search-result")
   val commentSection: String = config.getString("scraping.comment-section")
   val httpDelay: Int = config.getInt("scraping.http-delay")
+  val aggregateScoreFilePath: String = config.getString("scraping.aggregate-score-file-path")
   val noOfScraperActors: Int = config.getInt("actors.no-of-scraper-actors")
   val mongoDbConnStr: String = config.getString("mongo-db.connection-str")
   val mongoDbName: String = config.getString("mongo-db.db-name")

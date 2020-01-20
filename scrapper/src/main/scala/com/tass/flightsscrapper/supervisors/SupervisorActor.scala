@@ -21,6 +21,8 @@ class SupervisorActor(appProperties: ApplicationProperties) extends Actor {
   initializeAirports()
   initializeAirlines()
 
+//  router.route(SourceModel("Angara Airlines", "26"), self)
+
   override def receive: Receive = {
     case msg: String =>
       sender ! "Hello"
