@@ -1,6 +1,6 @@
 import Dependencies._
 
-ThisBuild / name := "flight-search-engine"
+ThisBuild / name := "com.tass.flight-search-engine"
 ThisBuild / version := "0.1.0"
 ThisBuild / scalaVersion := "2.13.1"
 
@@ -13,5 +13,6 @@ lazy val scrapper = (project in file("scrapper"))
   .dependsOn(common)
 
 lazy val backend = (project in file("backend"))
-  .settings(libraryDependencies ++= backendDependencies)
+  .enablePlugins(PlayScala)
+  .settings(libraryDependencies ++= backendDependencies :+ guice)
   .dependsOn(common)

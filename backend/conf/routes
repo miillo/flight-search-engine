@@ -1,0 +1,3 @@
+GET     /airports     com.tass.flight.planner.api.FlightController.airports
++nocsrf
+POST    /plan         com.tass.flight.planner.api.FlightController.plan

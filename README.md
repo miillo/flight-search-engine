@@ -1,4 +1,4 @@
-# flight-search-engine
+# com.tass.flight-search-engine
 
 ## Installation
 

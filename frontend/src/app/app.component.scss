@@ -1,0 +1,25 @@
+#app-container {
+  height: 99vh;
+}
+
+agm-map {
+  height: 100%;
+}
+
+#control-pane {
+  border-radius: 15px;
+  z-index: 100;
+  position: absolute;
+  top: 42px;
+  left: 42px;
+  opacity: 0.9;
+}
+
+#journey-pane {
+  z-index: 100;
+  position: absolute;
+  bottom: 42px;
+  left: 42px;
+  border-radius: 15px;
+  opacity: 0.9;
+}

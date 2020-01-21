@@ -1,0 +1,49 @@
+<div id="app-container">
+  <agm-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [zoom]="zoom"
+    [disableDefaultUI]="false"
+    [zoomControl]="true">
+    <agm-marker
+      *ngFor="let a of airports"
+      [latitude]="a.lat"
+      [longitude]="a.long"
+      [label]="a.id"
+      [markerDraggable]="false">
+    </agm-marker>
+
+    <agm-polyline [editable]="false">
+      <agm-polyline-point *ngFor="let airport of journeyAirports"
+                          [latitude]="airport.lat"
+                          [longitude]="airport.long">
+      </agm-polyline-point>
+    </agm-polyline>
+  </agm-map>
+  <div id="control-pane" class="mat-app-background basic-container">
+    <mat-form-field style="margin: 16px 16px 0 16px">
+      <mat-label>Start</mat-label>
+      <select [(ngModel)]="journeyStart" matNativeControl required>
+        <option
+          *ngFor="let a of airports"
+          [ngValue]="a.id">{{a.name}}
+        </option>
+      </select>
+    </mat-form-field>
+    <mat-form-field style="margin: 16px 16px 0 16px">
+      <mat-label>Destination</mat-label>
+      <select [(ngModel)]="journeyDestination" matNativeControl required>
+        <option
+          *ngFor="let a of airports"
+          [ngValue]="a.id">{{a.name}}
+        </option>
+      </select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" style="margin-right: 16px" (click)="onSubmit()">Search</button>
+  </div>
+  <div *ngIf="journey" id="journey-pane" class="mat-app-background basic-container">
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let flight of journey; let i = index;">{{ i + 1 }}. {{ flight.airline }} | {{ flight.from.name }} -> {{ flight.to.name }} | Dist: {{ flight.distance }}</mat-list-item>
+    </mat-list>
+  </div>
+</div>
