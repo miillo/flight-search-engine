@@ -51,6 +51,7 @@ class ScrapingService(appProperties: ApplicationProperties) {
       }
     } catch {
       case rto: Exception =>
+        rto.printStackTrace()
         println("Exception for: " + sourceModel.fullName + "[" + sourceModel.code + "]. Cause: " + rto.getMessage)
         None
     }

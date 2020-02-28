@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class FlightService {
-  static backendUrl = `http://0.0.0.0:9000`;
+  static backendUrl = `http://localhost:9000`;
 
   constructor(private http: HttpClient) {}
 

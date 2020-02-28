@@ -10,6 +10,7 @@ import scala.concurrent.duration.Duration
 object FlightsScrapper {
 
   def main(args: Array[String]): Unit = {
+    println("SCRAPPER @ @")
     val appProperties = new ApplicationProperties
 
     implicit val system: ActorSystem = ActorSystem("FlightsScrapper")
